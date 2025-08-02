@@ -26,7 +26,8 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					glow: 'hsl(var(--primary-glow))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -51,6 +52,14 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				blog: {
+					surface: 'hsl(var(--blog-surface))',
+					'surface-elevated': 'hsl(var(--blog-surface-elevated))',
+					'text-primary': 'hsl(var(--blog-text-primary))',
+					'text-secondary': 'hsl(var(--blog-text-secondary))',
+					accent: 'hsl(var(--blog-accent))',
+					'accent-light': 'hsl(var(--blog-accent-light))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -84,11 +93,46 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'slide-up': {
+					'0%': { opacity: '0', transform: 'translateY(20px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'glow': {
+					'0%': { boxShadow: 'var(--shadow-md)' },
+					'100%': { boxShadow: 'var(--shadow-glow)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.6s ease-out',
+				'slide-up': 'slide-up 0.6s ease-out',
+				'glow': 'glow 2s ease-in-out infinite alternate'
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-surface': 'var(--gradient-surface)',
+				'gradient-text': 'var(--gradient-text)'
+			},
+			boxShadow: {
+				'blog-sm': 'var(--shadow-sm)',
+				'blog-md': 'var(--shadow-md)',
+				'blog-lg': 'var(--shadow-lg)',
+				'blog-glow': 'var(--shadow-glow)'
+			},
+			transitionTimingFunction: {
+				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+				'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+			},
+			fontSize: {
+				'blog-hero': ['3.5rem', { lineHeight: '1', letterSpacing: '-0.02em' }],
+				'blog-title': ['2.25rem', { lineHeight: '1.1', letterSpacing: '-0.01em' }],
+				'blog-subtitle': ['1.25rem', { lineHeight: '1.4', letterSpacing: '0' }]
 			}
 		}
 	},
