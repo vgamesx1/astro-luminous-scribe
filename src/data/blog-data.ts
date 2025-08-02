@@ -1,11 +1,14 @@
 export interface BlogPost {
   id: string;
+  slug: string;
   title: string;
   excerpt: string;
   content: string;
   author: {
     name: string;
     avatar: string;
+    role: string;
+    bio: string;
   };
   publishedAt: string;
   readingTime: number;
@@ -17,6 +20,7 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     id: "getting-started-with-astro",
+    slug: "getting-started-with-astro",
     title: "Getting Started with Astro: A Modern Static Site Generator",
     excerpt: "Discover how Astro revolutionizes static site generation with its island architecture and zero-JavaScript approach by default.",
     content: `# Getting Started with Astro
@@ -45,7 +49,9 @@ npm run dev
 Start building your next project with Astro today!`,
     author: {
       name: "Sarah Chen",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b002?w=100&h=100&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b002?w=100&h=100&fit=crop&crop=face",
+      role: "Frontend Developer",
+      bio: "Sarah is a passionate frontend developer with expertise in modern web technologies and static site generators."
     },
     publishedAt: "2024-01-15",
     readingTime: 5,
@@ -55,6 +61,7 @@ Start building your next project with Astro today!`,
   },
   {
     id: "modern-css-techniques",
+    slug: "modern-css-techniques",
     title: "Modern CSS Techniques for Better User Interfaces",
     excerpt: "Explore cutting-edge CSS features like container queries, cascade layers, and subgrid to create responsive and maintainable interfaces.",
     content: `# Modern CSS Techniques for Better User Interfaces
@@ -108,7 +115,9 @@ Create more flexible grid layouts with subgrid:
 These features represent the future of CSS and are available in modern browsers today.`,
     author: {
       name: "Alex Rodriguez",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+      role: "CSS Specialist",
+      bio: "Alex is a CSS expert who loves exploring cutting-edge web technologies and teaching modern development practices."
     },
     publishedAt: "2024-01-10",
     readingTime: 7,
@@ -118,6 +127,7 @@ These features represent the future of CSS and are available in modern browsers 
   },
   {
     id: "typescript-best-practices",
+    slug: "typescript-best-practices",
     title: "TypeScript Best Practices for Large Applications",
     excerpt: "Learn essential TypeScript patterns and practices that will make your large-scale applications more maintainable and type-safe.",
     content: `# TypeScript Best Practices for Large Applications
@@ -166,7 +176,9 @@ type UserWithoutId = Omit<User, 'id'>;
 Following these practices will improve your development experience and code quality.`,
     author: {
       name: "Emily Johnson",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+      role: "Senior TypeScript Developer",
+      bio: "Emily is a senior developer specializing in TypeScript and large-scale application architecture."
     },
     publishedAt: "2024-01-08",
     readingTime: 6,
@@ -176,6 +188,7 @@ Following these practices will improve your development experience and code qual
   },
   {
     id: "react-performance-optimization",
+    slug: "react-performance-optimization",
     title: "React Performance Optimization: Beyond the Basics",
     excerpt: "Deep dive into advanced React performance optimization techniques including memoization, code splitting, and virtual scrolling.",
     content: `# React Performance Optimization: Beyond the Basics
@@ -236,7 +249,9 @@ const VirtualList = ({ items }) => (
 These techniques will help you build performant React applications at scale.`,
     author: {
       name: "David Kim",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+      role: "React Performance Expert",
+      bio: "David specializes in React performance optimization and has helped teams scale applications to millions of users."
     },
     publishedAt: "2024-01-05",
     readingTime: 8,
@@ -246,6 +261,7 @@ These techniques will help you build performant React applications at scale.`,
   },
   {
     id: "building-accessible-web-apps",
+    slug: "building-accessible-web-apps",
     title: "Building Accessible Web Applications: A Complete Guide",
     excerpt: "Learn how to create web applications that are accessible to all users, including those using assistive technologies.",
     content: `# Building Accessible Web Applications: A Complete Guide
@@ -303,7 +319,9 @@ Test your applications with screen readers like NVDA, JAWS, or VoiceOver.
 Building accessible applications is not just about compliance—it's about creating inclusive experiences for all users.`,
     author: {
       name: "Maria Garcia",
-      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=face",
+      role: "UX Accessibility Expert",
+      bio: "Maria is a passionate advocate for web accessibility and helps teams create inclusive digital experiences."
     },
     publishedAt: "2024-01-03",
     readingTime: 9,

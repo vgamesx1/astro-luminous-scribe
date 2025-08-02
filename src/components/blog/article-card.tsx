@@ -2,6 +2,7 @@ import { Clock, User, Tag } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BlogPost } from "@/data/blog-data";
+import { useNavigate } from "react-router-dom";
 
 interface ArticleCardProps {
   post: BlogPost;
@@ -9,12 +10,17 @@ interface ArticleCardProps {
 }
 
 export function ArticleCard({ post, featured = false }: ArticleCardProps) {
+  const navigate = useNavigate();
   const cardClasses = featured 
-    ? "group hover:shadow-blog-lg transition-all duration-300 hover:-translate-y-1 border-primary/10 bg-gradient-surface" 
-    : "group hover:shadow-blog-md transition-all duration-300 hover:-translate-y-1";
+    ? "group hover:shadow-blog-lg transition-all duration-300 hover:-translate-y-1 border-primary/10 bg-gradient-surface cursor-pointer" 
+    : "group hover:shadow-blog-md transition-all duration-300 hover:-translate-y-1 cursor-pointer";
+
+  const handleClick = () => {
+    navigate(`/article/${post.slug}`);
+  };
 
   return (
-    <Card className={cardClasses}>
+    <Card className={cardClasses} onClick={handleClick}>
       {post.coverImage && (
         <div className="aspect-video w-full overflow-hidden rounded-t-lg">
           <img
