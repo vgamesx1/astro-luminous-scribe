@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Header } from "@/components/blog/header";
 import { HeroSection } from "@/components/blog/hero-section";
 import { FeaturedPosts } from "@/components/blog/featured-posts";
@@ -12,6 +13,15 @@ import { blogPosts } from "@/data/blog-data";
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Handle URL tag parameter
+  useEffect(() => {
+    const tagParam = searchParams.get('tag');
+    if (tagParam && !selectedTags.includes(tagParam)) {
+      setSelectedTags([tagParam]);
+    }
+  }, [searchParams]);
 
   // Filter posts based on search query and selected tags
   const filteredPosts = useMemo(() => {

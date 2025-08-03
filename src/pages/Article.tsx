@@ -1,4 +1,4 @@
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { Header } from "@/components/blog/header";
 import { Footer } from "@/components/blog/footer";
 import { Badge } from "@/components/ui/badge";
@@ -6,12 +6,59 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock, User, Calendar } from "lucide-react";
 import { blogPosts } from "@/data/blog-data";
 import { useState } from "react";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const Article = () => {
   const { slug } = useParams<{ slug: string }>();
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
   
   const post = blogPosts.find(p => p.slug === slug);
+  
+  const handleTagClick = (tag: string) => {
+    navigate(`/?tag=${encodeURIComponent(tag)}`);
+  };
+
+  const renderContent = (content: string) => {
+    const sections = content.split(/```(\w+)?\n([\s\S]*?)```/);
+    
+    return sections.map((section, index) => {
+      if (index % 3 === 1) {
+        // This is the language identifier
+        return null;
+      }
+      
+      if (index % 3 === 2) {
+        // This is code content
+        const language = sections[index - 1] || 'javascript';
+        return (
+          <div key={index} className="my-6">
+            <SyntaxHighlighter
+              language={language}
+              style={oneDark}
+              className="rounded-lg"
+              customStyle={{
+                margin: 0,
+                borderRadius: '0.5rem',
+              }}
+            >
+              {section}
+            </SyntaxHighlighter>
+          </div>
+        );
+      }
+      
+      // Regular text content
+      return section.split('\n\n').map((paragraph, pIndex) => (
+        paragraph.trim() && (
+          <p key={`${index}-${pIndex}`} className="text-lg leading-relaxed mb-6">
+            {paragraph}
+          </p>
+        )
+      ));
+    });
+  };
   
   if (!post) {
     return <Navigate to="/404" replace />;
@@ -35,7 +82,12 @@ const Article = () => {
           <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-2">
               {post.tags.map((tag) => (
-                <Badge key={tag} variant="outline">
+                <Badge 
+                  key={tag} 
+                  variant="outline" 
+                  className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+                  onClick={() => handleTagClick(tag)}
+                >
                   {tag}
                 </Badge>
               ))}
@@ -94,11 +146,7 @@ const Article = () => {
         
         <div className="prose prose-lg dark:prose-invert max-w-none">
           <div className="space-y-6 text-foreground leading-relaxed">
-            {post.content.split('\n\n').map((paragraph, index) => (
-              <p key={index} className="text-lg leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
+            {renderContent(post.content)}
           </div>
         </div>
         
