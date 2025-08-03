@@ -15,11 +15,17 @@ const Index = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Handle URL tag parameter
+  // Handle URL parameters
   useEffect(() => {
     const tagParam = searchParams.get('tag');
+    const searchParam = searchParams.get('search');
+    
     if (tagParam && !selectedTags.includes(tagParam)) {
       setSelectedTags([tagParam]);
+    }
+    
+    if (searchParam && searchQuery !== searchParam) {
+      setSearchQuery(searchParam);
     }
   }, [searchParams]);
 

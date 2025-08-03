@@ -14,6 +14,13 @@ const Article = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (query.trim()) {
+      navigate(`/?search=${encodeURIComponent(query)}`);
+    }
+  };
+  
   const post = blogPosts.find(p => p.slug === slug);
   
   const handleTagClick = (tag: string) => {
@@ -66,7 +73,7 @@ const Article = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header onSearch={setSearchQuery} searchQuery={searchQuery} />
+      <Header onSearch={handleSearch} searchQuery={searchQuery} />
       
       <article className="container mx-auto px-4 py-16 max-w-4xl">
         <div className="mb-8">
