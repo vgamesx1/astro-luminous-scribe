@@ -6,29 +6,65 @@ import { RecentPosts } from "@/components/blog/recent-posts";
 import { NewsletterSignup } from "@/components/blog/newsletter-signup";
 import { Footer } from "@/components/blog/footer";
 import { ArticleCard } from "@/components/blog/article-card";
+import { TagsDropdown } from "@/components/blog/tags-dropdown";
 import { blogPosts } from "@/data/blog-data";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  // Filter posts based on search query
+  // Filter posts based on search query and selected tags
   const filteredPosts = useMemo(() => {
-    if (!searchQuery.trim()) return blogPosts;
+    let posts = blogPosts;
     
-    const query = searchQuery.toLowerCase();
-    return blogPosts.filter(post =>
-      post.title.toLowerCase().includes(query) ||
-      post.excerpt.toLowerCase().includes(query) ||
-      post.tags.some(tag => tag.toLowerCase().includes(query)) ||
-      post.author.name.toLowerCase().includes(query)
-    );
-  }, [searchQuery]);
+    // Filter by tags first
+    if (selectedTags.length > 0) {
+      posts = posts.filter(post =>
+        selectedTags.some(tag => post.tags.includes(tag))
+      );
+    }
+    
+    // Then filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      posts = posts.filter(post =>
+        post.title.toLowerCase().includes(query) ||
+        post.excerpt.toLowerCase().includes(query) ||
+        post.tags.some(tag => tag.toLowerCase().includes(query)) ||
+        post.author.name.toLowerCase().includes(query)
+      );
+    }
+    
+    return posts;
+  }, [searchQuery, selectedTags]);
+
+  const handleTagSelect = (tag: string) => {
+    setSelectedTags(prev => [...prev, tag]);
+  };
+
+  const handleTagRemove = (tag: string) => {
+    setSelectedTags(prev => prev.filter(t => t !== tag));
+  };
+
+  const handleClearAllTags = () => {
+    setSelectedTags([]);
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Header onSearch={setSearchQuery} searchQuery={searchQuery} />
       
-      {!searchQuery && (
+      {/* Tags dropdown - always visible */}
+      <div className="container mx-auto px-4 py-4">
+        <TagsDropdown
+          selectedTags={selectedTags}
+          onTagSelect={handleTagSelect}
+          onTagRemove={handleTagRemove}
+          onClearAll={handleClearAllTags}
+        />
+      </div>
+      
+      {!searchQuery && selectedTags.length === 0 && (
         <>
           <HeroSection />
           <FeaturedPosts posts={filteredPosts} />
@@ -37,14 +73,16 @@ const Index = () => {
         </>
       )}
       
-      {searchQuery && (
+      {(searchQuery || selectedTags.length > 0) && (
         <div className="container mx-auto px-4 py-16">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">
-              Search Results
+              {searchQuery ? 'Search Results' : 'Filtered Articles'}
             </h1>
             <p className="text-muted-foreground">
-              Found {filteredPosts.length} article{filteredPosts.length !== 1 ? 's' : ''} for "{searchQuery}"
+              Found {filteredPosts.length} article{filteredPosts.length !== 1 ? 's' : ''}
+              {searchQuery && ` for "${searchQuery}"`}
+              {selectedTags.length > 0 && ` with tags: ${selectedTags.join(', ')}`}
             </p>
           </div>
           
