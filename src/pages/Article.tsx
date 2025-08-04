@@ -17,7 +17,7 @@ const Article = () => {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     if (query.trim()) {
-      navigate(`/?search=${encodeURIComponent(query)}`);
+      window.open(`/?search=${encodeURIComponent(query)}`, '_blank');
     }
   };
   
