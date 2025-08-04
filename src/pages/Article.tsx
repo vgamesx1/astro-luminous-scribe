@@ -3,15 +3,17 @@ import { Header } from "@/components/blog/header";
 import { Footer } from "@/components/blog/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, User, Calendar } from "lucide-react";
+import { ArrowLeft, Clock, User, Calendar, Copy, Check } from "lucide-react";
 import { blogPosts } from "@/data/blog-data";
 import { useState } from "react";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { toast } from "@/hooks/use-toast";
 
 const Article = () => {
   const { slug } = useParams<{ slug: string }>();
   const [searchQuery, setSearchQuery] = useState("");
+  const [copiedCode, setCopiedCode] = useState<string>("");
   const navigate = useNavigate();
   
   const handleSearch = (query: string) => {
@@ -27,6 +29,28 @@ const Article = () => {
     navigate(`/?tag=${encodeURIComponent(tag)}`);
   };
 
+  const handleCopyCode = async (code: string, codeId: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopiedCode(codeId);
+      toast({
+        title: "Code copied!",
+        description: "Code has been copied to your clipboard.",
+      });
+      
+      // Reset copied state after 2 seconds
+      setTimeout(() => {
+        setCopiedCode("");
+      }, 2000);
+    } catch (err) {
+      toast({
+        title: "Failed to copy",
+        description: "Could not copy code to clipboard.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const renderContent = (content: string) => {
     const sections = content.split(/```(\w+)?\n([\s\S]*?)```/);
     
@@ -39,19 +63,37 @@ const Article = () => {
       if (index % 3 === 2) {
         // This is code content
         const language = sections[index - 1] || 'javascript';
+        const codeId = `code-${index}`;
+        const isCopied = copiedCode === codeId;
+        
         return (
-          <div key={index} className="my-6">
-            <SyntaxHighlighter
-              language={language}
-              style={oneDark}
-              className="rounded-lg"
-              customStyle={{
-                margin: 0,
-                borderRadius: '0.5rem',
-              }}
-            >
-              {section}
-            </SyntaxHighlighter>
+          <div key={index} className="my-6 relative group">
+            <div className="relative">
+              <SyntaxHighlighter
+                language={language}
+                style={oneDark}
+                className="rounded-lg"
+                customStyle={{
+                  margin: 0,
+                  borderRadius: '0.5rem',
+                  paddingRight: '3rem',
+                }}
+              >
+                {section}
+              </SyntaxHighlighter>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 hover:bg-background"
+                onClick={() => handleCopyCode(section, codeId)}
+              >
+                {isCopied ? (
+                  <Check className="h-4 w-4 text-green-500" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </div>
         );
       }
