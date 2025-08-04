@@ -13,6 +13,7 @@ export interface BlogPost {
   publishedAt: string;
   readingTime: number;
   tags: string[];
+  category: string;
   featured: boolean;
   coverImage?: string;
 }
@@ -56,6 +57,7 @@ Start building your next project with Astro today!`,
     publishedAt: "2024-01-15",
     readingTime: 5,
     tags: ["Astro", "Static Sites", "Performance", "JavaScript"],
+    category: "Web Development",
     featured: true,
     coverImage: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=800&h=400&fit=crop"
   },
@@ -122,6 +124,7 @@ These features represent the future of CSS and are available in modern browsers 
     publishedAt: "2024-01-10",
     readingTime: 7,
     tags: ["CSS", "Frontend", "Design", "Web Development"],
+    category: "Design",
     featured: true,
     coverImage: "https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?w=800&h=400&fit=crop"
   },
@@ -183,6 +186,7 @@ Following these practices will improve your development experience and code qual
     publishedAt: "2024-01-08",
     readingTime: 6,
     tags: ["TypeScript", "JavaScript", "Best Practices", "Development"],
+    category: "Programming",
     featured: false,
     coverImage: "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=800&h=400&fit=crop"
   },
@@ -256,6 +260,7 @@ These techniques will help you build performant React applications at scale.`,
     publishedAt: "2024-01-05",
     readingTime: 8,
     tags: ["React", "Performance", "JavaScript", "Optimization"],
+    category: "Technology",
     featured: false,
     coverImage: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop"
   },
@@ -326,6 +331,7 @@ Building accessible applications is not just about compliance—it's about creat
     publishedAt: "2024-01-03",
     readingTime: 9,
     tags: ["Accessibility", "Web Development", "UX", "Inclusive Design"],
+    category: "Design",
     featured: false,
     coverImage: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=400&fit=crop"
   }

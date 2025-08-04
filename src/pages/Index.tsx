@@ -8,11 +8,13 @@ import { NewsletterSignup } from "@/components/blog/newsletter-signup";
 import { Footer } from "@/components/blog/footer";
 import { ArticleCard } from "@/components/blog/article-card";
 import { TagsDropdown } from "@/components/blog/tags-dropdown";
+import { CategoriesDropdown } from "@/components/blog/categories-dropdown";
 import { blogPosts } from "@/data/blog-data";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Handle URL parameters
@@ -29,7 +31,7 @@ const Index = () => {
     }
   }, [searchParams]);
 
-  // Filter posts based on search query and selected tags
+  // Filter posts based on search query, selected tags, and categories
   const filteredPosts = useMemo(() => {
     let posts = blogPosts;
     
@@ -40,6 +42,13 @@ const Index = () => {
       );
     }
     
+    // Filter by categories
+    if (selectedCategories.length > 0) {
+      posts = posts.filter(post =>
+        selectedCategories.includes(post.category)
+      );
+    }
+    
     // Then filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
@@ -47,12 +56,13 @@ const Index = () => {
         post.title.toLowerCase().includes(query) ||
         post.excerpt.toLowerCase().includes(query) ||
         post.tags.some(tag => tag.toLowerCase().includes(query)) ||
+        post.category.toLowerCase().includes(query) ||
         post.author.name.toLowerCase().includes(query)
       );
     }
     
     return posts;
-  }, [searchQuery, selectedTags]);
+  }, [searchQuery, selectedTags, selectedCategories]);
 
   const handleTagSelect = (tag: string) => {
     setSelectedTags(prev => [...prev, tag]);
@@ -66,21 +76,41 @@ const Index = () => {
     setSelectedTags([]);
   };
 
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategories(prev => [...prev, category]);
+  };
+
+  const handleCategoryRemove = (category: string) => {
+    setSelectedCategories(prev => prev.filter(c => c !== category));
+  };
+
+  const handleClearAllCategories = () => {
+    setSelectedCategories([]);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header onSearch={setSearchQuery} searchQuery={searchQuery} />
       
-      {/* Tags dropdown - always visible */}
+      {/* Tags and Categories dropdowns - always visible */}
       <div className="container mx-auto px-4 py-4">
-        <TagsDropdown
-          selectedTags={selectedTags}
-          onTagSelect={handleTagSelect}
-          onTagRemove={handleTagRemove}
-          onClearAll={handleClearAllTags}
-        />
+        <div className="flex items-center gap-4">
+          <TagsDropdown
+            selectedTags={selectedTags}
+            onTagSelect={handleTagSelect}
+            onTagRemove={handleTagRemove}
+            onClearAll={handleClearAllTags}
+          />
+          <CategoriesDropdown
+            selectedCategories={selectedCategories}
+            onCategorySelect={handleCategorySelect}
+            onCategoryRemove={handleCategoryRemove}
+            onClearAll={handleClearAllCategories}
+          />
+        </div>
       </div>
       
-      {!searchQuery && selectedTags.length === 0 && (
+      {!searchQuery && selectedTags.length === 0 && selectedCategories.length === 0 && (
         <>
           <FeaturedPosts posts={filteredPosts} />
           <RecentPosts posts={filteredPosts} />
@@ -88,7 +118,7 @@ const Index = () => {
         </>
       )}
       
-      {(searchQuery || selectedTags.length > 0) && (
+      {(searchQuery || selectedTags.length > 0 || selectedCategories.length > 0) && (
         <div className="container mx-auto px-4 py-16">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">
@@ -98,6 +128,7 @@ const Index = () => {
               Found {filteredPosts.length} article{filteredPosts.length !== 1 ? 's' : ''}
               {searchQuery && ` for "${searchQuery}"`}
               {selectedTags.length > 0 && ` with tags: ${selectedTags.join(', ')}`}
+              {selectedCategories.length > 0 && ` in categories: ${selectedCategories.join(', ')}`}
             </p>
           </div>
           
