@@ -82,7 +82,6 @@ const Index = () => {
       
       {!searchQuery && selectedTags.length === 0 && (
         <>
-          <HeroSection />
           <FeaturedPosts posts={filteredPosts} />
           <RecentPosts posts={filteredPosts} />
           <NewsletterSignup />
