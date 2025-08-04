@@ -31,7 +31,7 @@ export function Header({ onSearch, searchQuery }: HeaderProps) {
             <a href="/" className="text-sm font-medium hover:text-primary transition-colors">
               Home
             </a>
-            <a href="/blog" className="text-sm font-medium hover:text-primary transition-colors">
+            <a href="/articles" className="text-sm font-medium hover:text-primary transition-colors">
               Articles
             </a>
             <a href="/about" className="text-sm font-medium hover:text-primary transition-colors">
@@ -86,7 +86,7 @@ export function Header({ onSearch, searchQuery }: HeaderProps) {
                 <a href="/" className="text-sm font-medium hover:text-primary transition-colors py-2">
                   Home
                 </a>
-                <a href="/blog" className="text-sm font-medium hover:text-primary transition-colors py-2">
+                <a href="/articles" className="text-sm font-medium hover:text-primary transition-colors py-2">
                   Articles
                 </a>
                 <a href="/about" className="text-sm font-medium hover:text-primary transition-colors py-2">
