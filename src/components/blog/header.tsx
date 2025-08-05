@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
   onSearch: (query: string) => void;
@@ -28,15 +29,15 @@ export function Header({ onSearch, searchQuery }: HeaderProps) {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="/" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
               Home
-            </a>
-            <a href="/articles" className="text-sm font-medium hover:text-primary transition-colors">
+            </Link>
+            <Link to="/articles" className="text-sm font-medium hover:text-primary transition-colors">
               Articles
-            </a>
-            <a href="/about" className="text-sm font-medium hover:text-primary transition-colors">
+            </Link>
+            <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors">
               About
-            </a>
+            </Link>
           </nav>
 
           {/* Search Bar */}
@@ -83,15 +84,15 @@ export function Header({ onSearch, searchQuery }: HeaderProps) {
                 />
               </div>
               <nav className="flex flex-col space-y-2">
-                <a href="/" className="text-sm font-medium hover:text-primary transition-colors py-2">
+                <Link to="/" className="text-sm font-medium hover:text-primary transition-colors py-2">
                   Home
-                </a>
-                <a href="/articles" className="text-sm font-medium hover:text-primary transition-colors py-2">
+                </Link>
+                <Link to="/articles" className="text-sm font-medium hover:text-primary transition-colors py-2">
                   Articles
-                </a>
-                <a href="/about" className="text-sm font-medium hover:text-primary transition-colors py-2">
+                </Link>
+                <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors py-2">
                   About
-                </a>
+                </Link>
               </nav>
             </div>
           </div>
