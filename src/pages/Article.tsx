@@ -3,12 +3,13 @@ import { Header } from "@/components/blog/header";
 import { Footer } from "@/components/blog/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, User, Calendar, Copy, Check } from "lucide-react";
+import { ArrowLeft, Clock, User, Calendar, Copy, Check, X } from "lucide-react";
 import { blogPosts } from "@/data/blog-data";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { toast } from "@/hooks/use-toast";
+import { ArticleCard } from "@/components/blog/article-card";
 
 const Article = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -18,9 +19,21 @@ const Article = () => {
   
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    // Don't navigate away from the article when searching
-    // Users can navigate to search results manually if needed
   };
+
+  // Filter posts based on search query
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    
+    const query = searchQuery.toLowerCase();
+    return blogPosts.filter(post =>
+      post.title.toLowerCase().includes(query) ||
+      post.excerpt.toLowerCase().includes(query) ||
+      post.tags.some(tag => tag.toLowerCase().includes(query)) ||
+      post.category.toLowerCase().includes(query) ||
+      post.author.name.toLowerCase().includes(query)
+    );
+  }, [searchQuery]);
   
   const post = blogPosts.find(p => p.slug === slug);
   
@@ -115,6 +128,41 @@ const Article = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header onSearch={handleSearch} searchQuery={searchQuery} />
+      
+      {/* Search Results Overlay */}
+      {searchQuery && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20">
+          <div className="bg-background border rounded-lg shadow-lg max-w-4xl w-full mx-4 max-h-[70vh] overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h2 className="text-lg font-semibold">
+                Search Results for "{searchQuery}" ({searchResults.length} found)
+              </h2>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSearchQuery("")}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="p-4 overflow-y-auto max-h-[calc(70vh-80px)]">
+              {searchResults.length === 0 ? (
+                <p className="text-muted-foreground text-center py-8">
+                  No articles found. Try different search terms.
+                </p>
+              ) : (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {searchResults.map(result => (
+                    <div key={result.id} onClick={() => setSearchQuery("")}>
+                      <ArticleCard post={result} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       
       <article className="container mx-auto px-4 py-16 max-w-4xl">
         <div className="mb-8">
