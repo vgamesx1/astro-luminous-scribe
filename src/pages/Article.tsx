@@ -131,8 +131,14 @@ const Article = () => {
       
       {/* Search Results Overlay */}
       {searchQuery && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20">
-          <div className="bg-background border rounded-lg shadow-lg max-w-4xl w-full mx-4 max-h-[70vh] overflow-hidden">
+        <div 
+          className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20"
+          onClick={() => setSearchQuery("")}
+        >
+          <div 
+            className="bg-background border rounded-lg shadow-lg max-w-4xl w-full mx-4 max-h-[70vh] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between p-4 border-b">
               <h2 className="text-lg font-semibold">
                 Search Results for "{searchQuery}" ({searchResults.length} found)
