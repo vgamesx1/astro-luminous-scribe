@@ -54,7 +54,14 @@ export function CategoriesDropdown({
             )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-64 max-h-80 overflow-y-auto" align="start" sideOffset={4}>
+        <DropdownMenuContent 
+          className="w-64 max-h-80 overflow-y-auto z-50" 
+          align="start" 
+          sideOffset={4}
+          side="bottom"
+          avoidCollisions={true}
+          collisionPadding={8}
+        >
           <DropdownMenuLabel>Filter by Categories</DropdownMenuLabel>
           <DropdownMenuSeparator />
           
