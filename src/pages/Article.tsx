@@ -18,9 +18,8 @@ const Article = () => {
   
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    if (query.trim()) {
-      navigate(`/?search=${encodeURIComponent(query)}`);
-    }
+    // Don't navigate away from the article when searching
+    // Users can navigate to search results manually if needed
   };
   
   const post = blogPosts.find(p => p.slug === slug);
