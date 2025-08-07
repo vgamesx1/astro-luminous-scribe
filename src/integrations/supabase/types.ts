@@ -10,90 +10,11 @@ export type Database = {
   // Allows to automatically instanciate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.12 (cd3cf9e)"
+    PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
-      blog_posts: {
-        Row: {
-          author: string
-          content: string
-          created_at: string | null
-          description: string
-          id: string
-          published: boolean | null
-          slug: string
-          tags: string[] | null
-          title: string
-          updated_at: string | null
-        }
-        Insert: {
-          author?: string
-          content: string
-          created_at?: string | null
-          description: string
-          id?: string
-          published?: boolean | null
-          slug: string
-          tags?: string[] | null
-          title: string
-          updated_at?: string | null
-        }
-        Update: {
-          author?: string
-          content?: string
-          created_at?: string | null
-          description?: string
-          id?: string
-          published?: boolean | null
-          slug?: string
-          tags?: string[] | null
-          title?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      comments: {
-        Row: {
-          approved: boolean | null
-          author_email: string
-          author_name: string
-          content: string
-          created_at: string | null
-          id: string
-          post_id: string
-          updated_at: string | null
-        }
-        Insert: {
-          approved?: boolean | null
-          author_email: string
-          author_name: string
-          content: string
-          created_at?: string | null
-          id?: string
-          post_id: string
-          updated_at?: string | null
-        }
-        Update: {
-          approved?: boolean | null
-          author_email?: string
-          author_name?: string
-          content?: string
-          created_at?: string | null
-          id?: string
-          post_id?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "comments_post_id_fkey"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "blog_posts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
