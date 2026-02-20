@@ -1,0 +1,17 @@
+---
+import TagPills from './TagPills.astro';
+
+const { post } = Astro.props;
+const { data, slug } = post;
+const date = new Date(data.pubDate);
+const dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+---
+
+<article class="card">
+  <h2 style="margin-top:0">
+    <a href={`/blog/${slug}`}>{data.title}</a>
+  </h2>
+  <div class="meta">{dateStr} • {data.tags?.length ?? 0} tag(s)</div>
+  {data.description && <p class="prose">{data.description}</p>}
+  <TagPills tags={data.tags} />
+</article>

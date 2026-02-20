@@ -1,0 +1,12 @@
+---
+const { title = 'Quick links' } = Astro.props;
+---
+
+<aside class="card">
+  <h3 style="margin-top:0">{title}</h3>
+  <p class="meta">Browse by tags, or search all posts.</p>
+  <div class="tags">
+    <a class="tag" href="/tags">All tags</a>
+    <a class="tag" href="/search">Search</a>
+  </div>
+</aside>
