@@ -1,0 +1,34 @@
+# Decap CMS config
+# - Local dev: set `local_backend: true` and run `npm run cms` (decap-server)
+# - Production: configure a backend (default here is `git-gateway`, best paired with Netlify Identity + Git Gateway)
+
+backend:
+  name: git-gateway
+  branch: main
+
+# Allows local editing when running on localhost with `npx decap-server` / `npm run cms`
+local_backend: true
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text", required: false, default: "" }
+      - label: "Publish Date"
+        name: "pubDate"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+      - { label: "Tags", name: "tags", widget: "list", required: false, default: [] }
+      - { label: "Draft", name: "draft", widget: "boolean", required: false, default: false }
+      - { label: "Body", name: "body", widget: "markdown" }

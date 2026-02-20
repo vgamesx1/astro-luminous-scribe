@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { getPublishedPosts, getAllTags } from '../lib/posts';
+
+const posts = await getPublishedPosts();
+const tags = getAllTags(posts);
+const topTags = tags.slice(0, 12);
+---
+
+<BaseLayout title="Astro Dark Blog" description="A simple Astro blog with dark mode, tags, and search.">
+  <section class="card" style="margin-bottom:16px">
+    <h1 style="margin-top:0">Simple blog, dark mode included.</h1>
+    <p class="meta">Edit posts in <code>src/content/blog</code>. Tags and search update automatically.</p>
+
+    <form id="homeSearch" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+      <input name="q" type="search" placeholder="Search posts…" aria-label="Search" style="flex:1; min-width:220px" />
+      <button class="pill" type="submit">Search</button>
+    </form>
+
+    {topTags.length > 0 && (
+      <div class="tags" style="margin-top:14px">
+        {topTags.map(([tag, count]) => (
+          <a class="tag" href={`/tags/${encodeURIComponent(tag)}`} title={`${count} post(s)`}>#{tag}</a>
+        ))}
+      </div>
+    )}
+
+    <script is:inline>
+      (function () {
+        const form = document.getElementById('homeSearch');
+        if (!form) return;
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const q = new FormData(form).get('q');
+          const query = (q ? String(q) : '').trim();
+          const url = query ? `/search?q=${encodeURIComponent(query)}` : '/search';
+          window.location.href = url;
+        });
+      })();
+    </script>
+  </section>
+
+  <div class="grid">
+    <section aria-label="Posts">
+      {posts.length === 0 ? (
+        <div class="card">
+          <h2 style="margin-top:0">No posts yet</h2>
+          <p class="meta">Add a Markdown file in <code>src/content/blog/</code>.</p>
+        </div>
+      ) : (
+        <div style="display:flex; flex-direction:column; gap:16px">
+          {posts.map((post) => (
+            <PostCard post={post} />
+          ))}
+        </div>
+      )}
+    </section>
+
+    <Sidebar title="Explore" />
+  </div>
+</BaseLayout>
